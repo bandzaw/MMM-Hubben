@@ -1,0 +1,13 @@
+.MMM-Hubben table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.MMM-Hubben td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.MMM-Hubben tr.current-day {
+    background-color: #f2f2f2;
+}
