@@ -8,15 +8,16 @@
 const NodeHelper = require('node_helper');
 const https = require('node:https');
 const cheerio = require('cheerio');
-const e = require('express');
 
 module.exports = NodeHelper.create({
+
     start: function() {
         console.log('Starting node_helper for: ' + this.name);
+        this.config = null;
     },
 
-    fetchMenu: function() {
-        https.get('https://www.hubben.rest/', (res) => {
+    fetchMenu: function(hubbenurl) {
+        https.get(hubbenurl, (res) => {
             let data = '';
 
             // A chunk of data has been received.
@@ -50,7 +51,6 @@ module.exports = NodeHelper.create({
                         menu[currentDay].push($(this).text());
                     }
                 });
-                console.log(menu);
                 this.sendSocketNotification('HUBBEN_MENU', menu);
             });
         }).on('error', (err) => {
@@ -59,8 +59,11 @@ module.exports = NodeHelper.create({
     },
 
     socketNotificationReceived: function(notification, payload) {
-        if (notification === 'GET_MENU') {
-            this.fetchMenu();
+        if (notification === 'HUBBEN_STARTING') {
+            this.fetchMenu(payload.hubbenurl);
+            setInterval(() => {
+                this.fetchMenu(payload.hubbenurl);
+            }, payload.updateIntervalInHours * 60 * 60 * 1000); // X hours in milliseconds
         }
     }
 });

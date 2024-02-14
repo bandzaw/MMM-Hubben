@@ -1,13 +1,15 @@
 /* Magic Mirror
  * Module: MMM-Hubben
  *
- * By Your Name, https://github.com/yourgithubusername
- * MIT Licensed.
+ * By Tommy Bandzaw, https://github.com/bandzaw/MMM-Hubben
+ * Boost Software Licensed.
  */
 
 Module.register('MMM-Hubben', {
     // Default module config.
     defaults: {
+        hubbenurl: 'https://www.hubben.rest/',
+        updateIntervalInHours: 8
     },
     
     getStyles: function() {
@@ -16,25 +18,11 @@ Module.register('MMM-Hubben', {
 
     // Override dom generator.
     getDom: function() {
-        Log.info('getDom of Hubben');
         var wrapper = document.createElement("div");
 
         if (this.menu) {
-            /*
-            for (var day in this.menu) {
-                var dayDiv = document.createElement("div");
-                dayDiv.innerHTML = '<strong>' + day + '</strong>';
-    
-                this.menu[day].forEach(function(lunch) {
-                    var lunchP = document.createElement("div");
-                    lunchP.innerHTML = lunch;
-                    dayDiv.appendChild(lunchP);
-                });
-    
-                wrapper.appendChild(dayDiv);
-            }*/
             var table = document.createElement("table");
-            var today = new Date().toLocaleString('default', { weekday: 'long' }).toLowerCase();
+            var today = new Date().toLocaleString('sv-SE', { weekday: 'long' }).toLowerCase();
             for (var day in this.menu) {
                 var row = document.createElement("tr");
     
@@ -43,9 +31,10 @@ Module.register('MMM-Hubben', {
                 }
 
                 var dayCell = document.createElement("td");
-                dayCell.innerHTML = '<strong>' + day + '</strong>';
+                dayCell.className = "weekday";
+                dayCell.innerHTML = day;
                 row.appendChild(dayCell);
-    
+
                 var lunchCell = document.createElement("td");
                 this.menu[day].forEach(function(lunch) {
                     var lunchP = document.createElement("div");
@@ -68,13 +57,13 @@ Module.register('MMM-Hubben', {
     // Override start method.
     start: function() {
         this.menu = {};
+        this.data.header = "Hubben veckans lunchmeny";
         Log.info('Starting module: ' + this.name);
-        this.sendSocketNotification('GET_MENU');
+        this.sendSocketNotification('HUBBEN_STARTING', this.config);
     },
 
     getHeader: function() {
-        Log.info('getHeader');
-        return this.name + " - veckans lunch meny";
+        return this.data.header;
     },
     
     // Override socket notification handler.
@@ -82,6 +71,7 @@ Module.register('MMM-Hubben', {
         Log.info('Received socketNotification: ' + notification);
         if (notification === 'HUBBEN_MENU') {
             this.menu = payload;
+            this.data.header = "Hubben veckans lunchmeny, senast uppdaterad: " + new Date().toLocaleString('sv-SE');
             this.updateDom();
         }
     }

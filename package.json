@@ -1,0 +1,31 @@
+{
+  "name": "MMM-Hubben",
+  "version": "1.0.0",
+  "description": "Show the lunch menu for restaurant Hubben in Mölnlycke, Sweden",
+  "main": "MMM-Hubben.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yourusername/MMM-Hubben.git"
+  },
+  "keywords": [
+    "MagicMirror",
+    "module",
+    "lunch",
+    "lunchmeny",
+    "Emerson",
+    "Rosemount",
+    "Hubben",
+    "Mölnlycke"
+  ],
+  "author": "Tommy Bandzaw",
+  "license": "Boost License",
+  "bugs": {
+    "url": "https://github.com/bandzaw/MMM-Hubben/issues"
+  },
+  "homepage": "https://github.com/bandzaw/MMM-Hubben#readme",
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.12"
+  }
+}

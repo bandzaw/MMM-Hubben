@@ -9,5 +9,15 @@
 }
 
 .MMM-Hubben tr.current-day {
-    background-color: #f2f2f2;
+    background-color: #454545;
+}
+
+.MMM-Hubben tr.current-day td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+.MMM-Hubben td.weekday {
+    vertical-align: top;
+    font-weight: bold;
 }
